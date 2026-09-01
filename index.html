@@ -18,9 +18,7 @@
             align-items: center;
             justify-content: center;
             font-family: 'Courier New', Consolas, 'Segoe UI', monospace;
-            background: #1a1512;
-            /* Dirt-like gradient background */
-            background-image: radial-gradient(circle at 20% 30%, #3d2c1e, #1a1512 80%);
+            background: #1a1512;  /* Solid dark, no image, no gradient */
             padding: 20px;
             image-rendering: pixelated;
         }
@@ -34,9 +32,7 @@
             border-radius: 12px;
             padding: 32px 30px 28px;
             box-shadow: inset 0 0 0 2px #1f1812, 0 16px 48px rgba(0, 0, 0, 0.8);
-            position: relative;
             color: #d4c9b8;
-            transition: border-color 0.2s;
         }
 
         /* Top "inventory" stripe */
@@ -71,12 +67,8 @@
             background: #3f3328;
             border: 3px solid #6b5542;
             image-rendering: pixelated;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.4rem;
-            color: #8fcdff;
             flex-shrink: 0;
+            object-fit: contain;
         }
 
         .mod-title h1 {
@@ -101,7 +93,7 @@
             text-transform: uppercase;
         }
 
-        /* ── BODY TEXT (raw & direct) ── */
+        /* ── BODY TEXT ── */
         .mod-description {
             background: #1f1812;
             border: 2px solid #3f3328;
@@ -116,11 +108,9 @@
         .mod-description strong {
             color: #f5e6c8;
         }
-
         .mod-description .highlight {
             color: #ffb347;
         }
-
         .mod-description .mc-version {
             background: #2c241c;
             padding: 2px 10px;
@@ -134,7 +124,6 @@
             padding-top: 12px;
             border-top: 2px dashed #3f3328;
         }
-
         .how-to span {
             display: block;
             font-weight: 700;
@@ -142,20 +131,17 @@
             margin-bottom: 6px;
             font-size: 1rem;
         }
-
         .how-to ol {
             list-style: none;
             counter-reset: step;
             padding-left: 0;
         }
-
         .how-to ol li {
             counter-increment: step;
             padding: 4px 0 4px 32px;
             position: relative;
             font-size: 0.92rem;
         }
-
         .how-to ol li::before {
             content: counter(step);
             position: absolute;
@@ -171,7 +157,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
         }
 
         .feature-grid {
@@ -181,14 +166,12 @@
             margin: 10px 0 4px;
             padding-left: 4px;
         }
-
         .feature-grid li {
             list-style: none;
             padding: 2px 0 2px 18px;
             position: relative;
             font-size: 0.88rem;
         }
-
         .feature-grid li::before {
             content: "▸";
             color: #ffb347;
@@ -224,7 +207,6 @@
             text-align: center;
             border-radius: 4px;
         }
-
         .btn .sub {
             display: block;
             font-weight: 400;
@@ -277,14 +259,10 @@
             width: 28px;
             height: 28px;
             background: #5d4b3a;
-            display: inline-block;
             border: 2px solid #8a735a;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffb347;
-            font-weight: 700;
+            object-fit: contain;
+            image-rendering: pixelated;
+            flex-shrink: 0;
         }
 
         .btn:active {
@@ -303,7 +281,7 @@
             text-transform: uppercase;
         }
 
-        /* ── MODAL (old-school) ── */
+        /* ── MODAL ── */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -419,7 +397,6 @@
             .mod-icon {
                 width: 48px;
                 height: 48px;
-                font-size: 1.8rem;
             }
             .feature-grid {
                 grid-template-columns: 1fr;
@@ -447,9 +424,9 @@
 
     <div class="mod-panel">
 
-        <!-- HEADER -->
+        <!-- HEADER with your logo -->
         <div class="mod-header">
-            <div class="mod-icon">⬛</div>
+            <img src="moblogo.icon" alt="Mod Logo" class="mod-icon" />
             <div class="mod-title">
                 <h1>Dupe Mod</h1>
                 <span class="version-range">✔ 1.21.0 – 1.21.11</span>
@@ -493,10 +470,10 @@
             </button>
         </div>
 
-        <!-- FABRIC API BUTTON -->
+        <!-- FABRIC API BUTTON with your fabricapi.icon -->
         <div style="display:flex; justify-content:center; margin-top:6px;">
             <button class="btn btn-fabric" id="fabricBtn">
-                <span class="fabric-icon">F</span>
+                <img src="fabricapi.icon" alt="Fabric API" class="fabric-icon" />
                 Download Fabric API
                 <span class="sub" style="display:inline; margin-left:6px; font-size:0.6rem;">1.21.11</span>
             </button>
@@ -546,7 +523,7 @@
                 download('fabric-api-0.141.4+1.21.11.jar', 'Placeholder Fabric API JAR');
             };
 
-            // Modal logic
+            // Modal
             const modal = document.getElementById('paidModal');
             document.getElementById('paidBtn').onclick = function() { modal.classList.add('active'); };
             document.getElementById('modalClose').onclick = function() { modal.classList.remove('active'); };

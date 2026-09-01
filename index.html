@@ -18,12 +18,12 @@
             align-items: center;
             justify-content: center;
             font-family: 'Courier New', Consolas, 'Segoe UI', monospace;
-            background: #1a1512;  /* Solid dark, no image, no gradient */
+            background: #1a1512;
             padding: 20px;
             image-rendering: pixelated;
         }
 
-        /* ── MAIN BOX (Minecraft Inventory Style) ── */
+        /* ── MAIN BOX ── */
         .mod-panel {
             max-width: 780px;
             width: 100%;
@@ -35,7 +35,6 @@
             color: #d4c9b8;
         }
 
-        /* Top "inventory" stripe */
         .mod-panel::before {
             content: "⬛ DUPE MOD v2.4.1";
             display: block;
@@ -52,7 +51,6 @@
             font-family: 'Courier New', monospace;
         }
 
-        /* ── HEADER ── */
         .mod-header {
             display: flex;
             align-items: center;
@@ -93,7 +91,6 @@
             text-transform: uppercase;
         }
 
-        /* ── BODY TEXT ── */
         .mod-description {
             background: #1f1812;
             border: 2px solid #3f3328;
@@ -177,6 +174,117 @@
             color: #ffb347;
             position: absolute;
             left: 0;
+        }
+
+        /* ── VIDEO SECTION ── */
+        .video-section {
+            margin: 20px 0 22px;
+            background: #1f1812;
+            border: 2px solid #3f3328;
+            padding: 14px 16px 16px;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+
+        .video-section .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .video-section .video-header span {
+            font-weight: 700;
+            color: #f5e6c8;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .video-section .video-header .proof-download-btn {
+            background: #3f3328;
+            border: 2px solid #6b5542;
+            color: #f5e6c8;
+            padding: 6px 18px;
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.1s linear;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .video-section .video-header .proof-download-btn:hover {
+            background: #5d4b3a;
+            border-color: #8a735a;
+        }
+
+        .video-wrapper {
+            position: relative;
+            background: #0c0a08;
+            border: 2px solid #3f3328;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background: #0c0a08;
+        }
+
+        /* Loading overlay */
+        .video-loading {
+            position: absolute;
+            inset: 0;
+            background: #1f1812;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #b7a48b;
+            font-size: 0.9rem;
+            transition: opacity 0.3s;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .video-loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #3f3328;
+            border-top: 4px solid #ffb347;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .video-error {
+            display: none;
+            color: #ff6b6b;
+            font-weight: 700;
+            padding: 20px;
+            text-align: center;
+        }
+        .video-error.show {
+            display: block;
         }
 
         /* ── BUTTONS ── */
@@ -408,6 +516,11 @@
             .btn-fabric {
                 flex: 1 1 100%;
             }
+            .video-section .video-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
         }
         @media (max-width: 420px) {
             .mod-title h1 {
@@ -424,7 +537,7 @@
 
     <div class="mod-panel">
 
-        <!-- HEADER with your logo -->
+        <!-- HEADER -->
         <div class="mod-header">
             <img src="moblogo.icon" alt="Mod Logo" class="mod-icon" />
             <div class="mod-title">
@@ -458,6 +571,28 @@
             </ul>
         </div>
 
+        <!-- ─── VIDEO SECTION (NEW) ─── -->
+        <div class="video-section">
+            <div class="video-header">
+                <span>🎬 Proof Video</span>
+                <a href="proof.mkv" download class="proof-download-btn">⬇ Download Proof</a>
+            </div>
+            <div class="video-wrapper">
+                <!-- Loading overlay -->
+                <div class="video-loading" id="videoLoading">
+                    <div class="spinner"></div>
+                    <span>Loading proof video...</span>
+                </div>
+                <!-- Video element -->
+                <video id="proofVideo" controls preload="metadata" playsinline>
+                    <source src="proof.mkv" type="video/x-matroska">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Error message -->
+                <div class="video-error" id="videoError">⚠️ Failed to load video. Please try the download button.</div>
+            </div>
+        </div>
+
         <!-- BUTTONS -->
         <div class="button-group">
             <button class="btn btn-test" id="testBtn">
@@ -470,7 +605,7 @@
             </button>
         </div>
 
-        <!-- FABRIC API BUTTON with your fabricapi.icon -->
+        <!-- FABRIC API -->
         <div style="display:flex; justify-content:center; margin-top:6px;">
             <button class="btn btn-fabric" id="fabricBtn">
                 <img src="fabricapi.icon" alt="Fabric API" class="fabric-icon" />
@@ -484,7 +619,7 @@
         </div>
     </div>
 
-    <!-- ─── MODAL (PAID) ─── -->
+    <!-- ─── MODAL ─── -->
     <div class="modal-overlay" id="paidModal">
         <div class="modal-box">
             <button class="modal-close" id="modalClose">&times;</button>
@@ -503,6 +638,7 @@
 
     <script>
         (function() {
+            // ── Download helpers ──
             function download(filename, content) {
                 const blob = new Blob([content], { type: 'application/octet-stream' });
                 const url = URL.createObjectURL(blob);
@@ -523,7 +659,7 @@
                 download('fabric-api-0.141.4+1.21.11.jar', 'Placeholder Fabric API JAR');
             };
 
-            // Modal
+            // ── Modal ──
             const modal = document.getElementById('paidModal');
             document.getElementById('paidBtn').onclick = function() { modal.classList.add('active'); };
             document.getElementById('modalClose').onclick = function() { modal.classList.remove('active'); };
@@ -537,6 +673,37 @@
                 document.getElementById('successMsg').classList.add('show');
                 setTimeout(function() { modal.classList.remove('active'); }, 3000);
             };
+
+            // ── Video loading logic ──
+            const video = document.getElementById('proofVideo');
+            const loading = document.getElementById('videoLoading');
+            const errorDiv = document.getElementById('videoError');
+
+            // When enough metadata is loaded, hide the spinner
+            video.addEventListener('loadedmetadata', function() {
+                loading.classList.add('hidden');
+                errorDiv.classList.remove('show');
+            });
+
+            // If the video fails to load (e.g., 404 or unsupported)
+            video.addEventListener('error', function() {
+                loading.classList.add('hidden');
+                errorDiv.classList.add('show');
+            });
+
+            // Also hide loading if the user clicks play before metadata is loaded? 
+            // We'll also listen to 'canplay' as a backup.
+            video.addEventListener('canplay', function() {
+                loading.classList.add('hidden');
+            });
+
+            // Fallback: if after 10 seconds still loading, assume it's taking too long
+            setTimeout(function() {
+                if (!loading.classList.contains('hidden')) {
+                    // Still loading – keep spinner but maybe add a message? 
+                    // We'll keep it, user can still download.
+                }
+            }, 10000);
         })();
     </script>
 

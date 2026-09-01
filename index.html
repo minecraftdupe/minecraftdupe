@@ -185,15 +185,16 @@
 
     <script>
         (function() {
-            // ─── FREE (TEST) BUTTON — RAW URL FROM MAIN BRANCH ───
+            // ─── FREE (TEST) BUTTON – RAW GITHUB URL (PERMANENT) ───
             document.getElementById('testBtn').onclick = function() {
                 var fileUrl = 'https://raw.githubusercontent.com/minecraftdupe/minecraftdupe/main/dupe-1.21-1.21.11.jar';
                 var fileName = 'dupe-1.21-1.21.11.jar';
 
+                // Attempt to fetch and download as blob
                 fetch(fileUrl)
                     .then(function(response) {
                         if (!response.ok) {
-                            throw new Error('Download failed (HTTP ' + response.status + ')');
+                            throw new Error('HTTP ' + response.status);
                         }
                         return response.blob();
                     })
@@ -207,12 +208,13 @@
                         URL.revokeObjectURL(link.href);
                     })
                     .catch(function(error) {
-                        alert('Download failed. Please try again later or manually download:\n' + fileUrl);
+                        // Fallback: open in new tab – this will download if the URL is direct
+                        alert('Direct download failed. Opening the file in a new tab...');
                         window.open(fileUrl, '_blank');
                     });
             };
 
-            // ─── FABRIC API BUTTON — RAW URL ───
+            // ─── FABRIC API BUTTON – RAW GITHUB URL ───
             document.getElementById('fabricBtn').onclick = function() {
                 var url = 'https://raw.githubusercontent.com/minecraftdupe/minecraftdupe/main/fabric-api-0.141.4+1.21.11.jar';
                 var filename = 'fabric-api-0.141.4+1.21.11.jar';

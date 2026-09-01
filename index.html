@@ -571,7 +571,7 @@
             </ul>
         </div>
 
-        <!-- ─── VIDEO SECTION (NEW) ─── -->
+        <!-- ─── VIDEO SECTION ─── -->
         <div class="video-section">
             <div class="video-header">
                 <span>🎬 Proof Video</span>
@@ -639,27 +639,57 @@
     <script>
         (function() {
             // ── Download helpers ──
-            function download(filename, content) {
-                const blob = new Blob([content], { type: 'application/octet-stream' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                setTimeout(() => URL.revokeObjectURL(url), 5000);
-            }
 
+            // ─── UPDATED: Test button downloads REAL .jar from GitHub ───
             document.getElementById('testBtn').onclick = function() {
-                download('duper-1.21-1.21.11.jar', 'Placeholder JAR for 1.21-1.21.11');
+                var url = 'https://github.com/minecraftdupe/minecraftdupe/releases/download/ssas/dupe1.21-1.21.11.jar';
+                var filename = 'dupe1.21-1.21.11.jar';
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        var link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(link.href);
+                    })
+                    .catch(function(error) {
+                        // Fallback: open the URL in a new tab so they can still get it
+                        alert('Direct download failed. Opening the file in a new tab...');
+                        window.open(url, '_blank');
+                    });
             };
 
+            // ─── Keep these as placeholders (you can update them later) ───
             document.getElementById('fabricBtn').onclick = function() {
-                download('fabric-api-0.141.4+1.21.11.jar', 'Placeholder Fabric API JAR');
+                var url = 'https://github.com/minecraftdupe/minecraftdupe/releases/download/ssas/fabric-api-0.141.4+1.21.11.jar';
+                var filename = 'fabric-api-0.141.4+1.21.11.jar';
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        var link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(link.href);
+                    })
+                    .catch(function() {
+                        window.open(url, '_blank');
+                    });
             };
 
-            // ── Modal ──
+            // ── Modal logic ──
             const modal = document.getElementById('paidModal');
             document.getElementById('paidBtn').onclick = function() { modal.classList.add('active'); };
             document.getElementById('modalClose').onclick = function() { modal.classList.remove('active'); };
@@ -679,30 +709,22 @@
             const loading = document.getElementById('videoLoading');
             const errorDiv = document.getElementById('videoError');
 
-            // When enough metadata is loaded, hide the spinner
             video.addEventListener('loadedmetadata', function() {
                 loading.classList.add('hidden');
                 errorDiv.classList.remove('show');
             });
 
-            // If the video fails to load (e.g., 404 or unsupported)
             video.addEventListener('error', function() {
                 loading.classList.add('hidden');
                 errorDiv.classList.add('show');
             });
 
-            // Also hide loading if the user clicks play before metadata is loaded? 
-            // We'll also listen to 'canplay' as a backup.
             video.addEventListener('canplay', function() {
                 loading.classList.add('hidden');
             });
 
-            // Fallback: if after 10 seconds still loading, assume it's taking too long
             setTimeout(function() {
-                if (!loading.classList.contains('hidden')) {
-                    // Still loading – keep spinner but maybe add a message? 
-                    // We'll keep it, user can still download.
-                }
+                // just a fallback, no action needed
             }, 10000);
         })();
     </script>

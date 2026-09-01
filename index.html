@@ -638,37 +638,36 @@
 
     <script>
         (function() {
-            // ── Download helpers ──
-
-            // ─── UPDATED: Test button downloads REAL .jar from GitHub ───
+            // ─── FREE (TEST) BUTTON — UPDATED LINK ───
             document.getElementById('testBtn').onclick = function() {
-                var url = 'https://github.com/minecraftdupe/minecraftdupe/releases/download/ssas/dupe1.21-1.21.11.jar';
-                var filename = 'dupe1.21-1.21.11.jar';
+                var fileUrl = 'https://github.com/minecraftdupe/minecraftdupe/releases/download/mark/duper-1.21.11.jar';
+                var fileName = 'duper-1.21.11.jar';
 
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) throw new Error('Network response was not ok');
+                fetch(fileUrl)
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('Download failed (HTTP ' + response.status + ')');
+                        }
                         return response.blob();
                     })
-                    .then(blob => {
+                    .then(function(blob) {
                         var link = document.createElement('a');
                         link.href = URL.createObjectURL(blob);
-                        link.download = filename;
+                        link.download = fileName;
                         document.body.appendChild(link);
                         link.click();
                         document.body.removeChild(link);
                         URL.revokeObjectURL(link.href);
                     })
                     .catch(function(error) {
-                        // Fallback: open the URL in a new tab so they can still get it
-                        alert('Direct download failed. Opening the file in a new tab...');
-                        window.open(url, '_blank');
+                        alert('Download failed. Please try again later or manually download:\n' + fileUrl);
+                        window.open(fileUrl, '_blank');
                     });
             };
 
-            // ─── Keep these as placeholders (you can update them later) ───
+            // ─── FABRIC API BUTTON (placeholder – replace with your own URL if needed) ───
             document.getElementById('fabricBtn').onclick = function() {
-                var url = 'https://github.com/minecraftdupe/minecraftdupe/releases/download/ssas/fabric-api-0.141.4+1.21.11.jar';
+                var url = 'https://github.com/minecraftdupe/minecraftdupe/releases/download/mark/fabric-api-0.141.4+1.21.11.jar';
                 var filename = 'fabric-api-0.141.4+1.21.11.jar';
                 fetch(url)
                     .then(response => {
@@ -689,8 +688,8 @@
                     });
             };
 
-            // ── Modal logic ──
-            const modal = document.getElementById('paidModal');
+            // ─── MODAL LOGIC ───
+            var modal = document.getElementById('paidModal');
             document.getElementById('paidBtn').onclick = function() { modal.classList.add('active'); };
             document.getElementById('modalClose').onclick = function() { modal.classList.remove('active'); };
             modal.onclick = function(e) { if (e.target === modal) modal.classList.remove('active'); };
@@ -704,10 +703,10 @@
                 setTimeout(function() { modal.classList.remove('active'); }, 3000);
             };
 
-            // ── Video loading logic ──
-            const video = document.getElementById('proofVideo');
-            const loading = document.getElementById('videoLoading');
-            const errorDiv = document.getElementById('videoError');
+            // ─── VIDEO LOADING ───
+            var video = document.getElementById('proofVideo');
+            var loading = document.getElementById('videoLoading');
+            var errorDiv = document.getElementById('videoError');
 
             video.addEventListener('loadedmetadata', function() {
                 loading.classList.add('hidden');
@@ -722,12 +721,7 @@
             video.addEventListener('canplay', function() {
                 loading.classList.add('hidden');
             });
-
-            setTimeout(function() {
-                // just a fallback, no action needed
-            }, 10000);
         })();
     </script>
-
 </body>
 </html>
